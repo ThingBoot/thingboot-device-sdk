@@ -1,9 +1,3 @@
-
----
-
-**LICENSE.md**
-
-```markdown
 # ThingBoot Device SDK — Commercial License Agreement
 
 Copyright (c) 2026 芯步（ThingBoot）科技有限公司 / ThingBoot Technology Co., Ltd.  

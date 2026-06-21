@@ -1,15 +1,15 @@
-&lt;p align="right"&gt;
-  &lt;a href="./README_EN.md"&gt;English&lt;/a&gt; | 中文
-&lt;/p&gt;
+<p align="right">
+  <a href="./README_EN.md">English</a> | 中文
+</p>
 
-&lt;h1 align="center"&gt;芯步设备 SDK&lt;/h1&gt;
-&lt;p align="center"&gt;ThingBoot Device SDK — 预编译嵌入式物联网开发库&lt;/p&gt;
+<h1 align="center">芯步设备 SDK</h1>
+<p align="center">ThingBoot Device SDK — 预编译嵌入式物联网开发库</p>
 
 ---
 
-&gt; ⚠️ **商业授权须知**
-&gt; 本 SDK 为**预编译闭源库**，使用需获得芯步（ThingBoot）的按设备商业授权。  
-&gt; 严禁未经授权的再分发、逆向工程或超出授权设备数量的使用。
+> ⚠️ **商业授权须知**
+> 本 SDK 为**预编译闭源库**，使用需获得芯步（ThingBoot）的按设备商业授权。  
+> 严禁未经授权的再分发、逆向工程或超出授权设备数量的使用。
 
 ---
 
@@ -50,3 +50,82 @@ build_flags =
     -Os
 
 lib_deps = https://github.com/ThingBoot/thingboot-device-sdk.git#v1.0.1
+```
+
+### 2. 包含头文件
+
+```cpp
+#include <Arduino.h>
+#include <WiFiClient.h>
+#include "ThingBootSDK.h"
+```
+
+### 3. 编写应用
+
+```cpp
+thingboot::ThingBootDevice device;
+
+void setup() {
+    Serial.begin(115200);
+    device.begin("your-device-id");
+    
+    if (device.connect("iot.thingboot.com", 8883)) {
+        Serial.println("已连接芯步平台");
+        device.sendData("{\"status\":\"online\"}");
+    }
+}
+
+void loop() {
+    device.loop();  // 维持 SDK 心跳
+    
+    // 处理平台下发的命令
+    if (device.hasCommand()) {
+        auto cmd = device.getCommand();
+        if (cmd.type == "switch") {
+            digitalWrite(RELAY_PIN, cmd.value == "on" ? HIGH : LOW);
+        }
+    }
+}
+```
+
+## 目录结构
+
+```plain
+lib/thingboot-device-sdk/
+├── include/
+│   └── ThingBootSDK.h          # 公共 API 头文件
+├── lib/
+│   ├── libThingBootSDK_esp8266.a
+│   ├── libThingBootSDK_esp32.a
+│   └── libThingBootSDK_esp32s3.a
+├── examples/
+│   └── BasicUsage/
+│       ├── BasicUsage.ino
+│       └── platformio.ini
+├── library.json
+├── extra_script.py
+├── README.md
+├── README_EN.md
+└── LICENSE.md
+```
+
+## ABI 兼容警告
+
+SDK 编译参数固定为 `-fno-rtti -fno-exceptions -Os`。
+使用方 `platformio.ini` 必须包含相同参数，否则将出现链接错误或运行时异常。
+
+## 授权与计费
+
+- **按设备授权**：每台烧录了包含本 SDK 固件的物理设备需占用一个 License
+- **激活方式**：设备在 [芯步平台](https://console.thingboot.com) 使用授权码注册激活
+- **购买**：联系 `license@thingboot.com` 或通过芯步控制台购买
+
+## 技术支持
+
+- 技术支持：`support@thingboot.com`
+- 销售授权：`license@thingboot.com`
+- 官方文档：[docs.thingboot.com](https://docs.thingboot.com)
+
+---
+
+**版权所有 © 2026 芯步（ThingBoot）科技有限公司。保留所有权利。**
