@@ -27,7 +27,7 @@ public:
     ~ThingBootDevice();
 
     // Basic lifecycle
-    void begin(const char* deviceId);        // init SDK with device id
+    void setup();
     void restart();                          // request device restart
 
     // Network helpers (convenience wrappers)
