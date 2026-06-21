@@ -11,9 +11,11 @@
 
 #if defined(ESP8266) || defined(ESP32)
 #include <functional>
-#define TB_CALLBACK_CONFIG std::function<void(char*, uint8_t*, unsigned int)> callback
+#define TB_CALLBACK_EVENT std::function<void(SYS_STATE, bool)> event_callback
+#define TB_CALLBACK_CONFIG std::function<void(const char*, String)> config_callback
 #else
-#define TB_CALLBACK_CONFIG void (*callback)(char*, uint8_t*, unsigned int)
+#define TB_CALLBACK_EVENT void (*event_callback)(SYS_STATE, bool)
+#define TB_CALLBACK_CONFIG void (*config_callback)(const char*, String)
 #endif
 
 namespace thingboot {
@@ -33,10 +35,13 @@ struct TBDriver {
 
 class ThingBootDevice {
 private:
+    TB_CALLBACK_EVENT();
     TB_CALLBACK_CONFIG;
 public:
-    ThingBootDevice();
     ~ThingBootDevice();
+
+    ThingBootDevice& setEventCallback(TB_CALLBACK_EVENT);
+    ThingBootDevice& setConfigCallback(TB_CALLBACK_CONFIG);
 
     void setup();
     void restart();                          // request device restart
