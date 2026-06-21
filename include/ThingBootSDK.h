@@ -26,7 +26,6 @@ public:
     ThingBootDevice();
     ~ThingBootDevice();
 
-    // Basic lifecycle
     void setup();
     void restart();                          // request device restart
 
