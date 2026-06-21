@@ -11,66 +11,31 @@
 
 #if defined(ESP8266) || defined(ESP32)
 #include <functional>
-#define TB_CALLBACK_EVENT std::function<void(SYS_STATE, bool)> event_callback
-#define TB_CALLBACK_CONFIG std::function<void(const char*, String)> config_callback
+#define TB_CALLBACK_EVENT std::function<void(SYS_STATE, bool)> tb_event_callback
+#define TB_CALLBACK_CONFIG std::function<void(const char*, String)> tb_config_callback
 #else
-#define TB_CALLBACK_EVENT void (*event_callback)(SYS_STATE, bool)
-#define TB_CALLBACK_CONFIG void (*config_callback)(const char*, String)
+#define TB_CALLBACK_EVENT void (*tb_event_callback)(SYS_STATE, bool)
+#define TB_CALLBACK_CONFIG void (*tb_config_callback)(const char*, String)
 #endif
-
-namespace thingboot {
-
-// Callback types for drivers and commands
-typedef void (*tb_driver_init_t)();
-typedef void (*tb_driver_poll_t)();
-typedef void (*tb_command_handler_t)(const char* command, const char* payload);
-
-// Driver descriptor developers can fill for their hardware (LEDs, relays, sensors)
-struct TBDriver {
-    const char* name;                 // driver name, e.g. "led", "relay"
-    tb_driver_init_t init;            // called once during startup
-    tb_driver_poll_t poll;            // called regularly from SDK loop
-    tb_command_handler_t onCommand;   // optional per-driver command handler
-};
 
 class ThingBootDevice {
 private:
-    TB_CALLBACK_EVENT();
+    TB_CALLBACK_EVENT;
     TB_CALLBACK_CONFIG;
 public:
+    ThingBootDevice();
     ~ThingBootDevice();
 
     ThingBootDevice& setEventCallback(TB_CALLBACK_EVENT);
     ThingBootDevice& setConfigCallback(TB_CALLBACK_CONFIG);
 
+    String getVersion();
+
     void setup();
-    void restart();                          // request device restart
-
-    // Network helpers (convenience wrappers)
-    bool initWiFi(const char* ssid, const char* pass);
-    bool initEthernet();                     // stub for wired init
-    bool initCellular(const char* apn);      // stub for 4G/Cellular
-
-    // Server connection + transport
-    bool connectToServer(const char* host, uint16_t port);
-    bool sendTelemetry(const char* jsonPayload);
-
-    // Driver registration
-    bool registerDriver(const TBDriver* driver);
-
-    // Global command callback (for commands not handled by drivers)
-    void registerCommandHandler(tb_command_handler_t handler);
+    void restart();
 
     // Main loop - call from application loop()
     void loop();
-
-    // Introspection
-    const char* getDeviceId() const;
-
-private:
-    void* _impl;
 };
-
-} // namespace thingboot
 
 #endif // THINGBOOT_SDK_H
