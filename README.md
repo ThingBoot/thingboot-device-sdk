@@ -129,3 +129,35 @@ SDK 编译参数固定为 `-fno-rtti -fno-exceptions -Os`。
 ---
 
 **版权所有 © 2026 芯步（ThingBoot）科技有限公司。保留所有权利。**
+
+## Quick Start (ThingBoot SDK)
+
+Basic usage example (in your project's `src/main.cpp`):
+
+```cpp
+#include "ThingBootSDK.h"
+
+using namespace thingboot;
+
+// simple LED driver example
+void led_init() { /* init hardware */ }
+void led_poll() { /* poll/update LED state */ }
+void led_cmd(const char* cmd, const char* payload) { /* handle commands */ }
+
+static const TBDriver LED_DRIVER = {"led", led_init, led_poll, led_cmd};
+
+ThingBootDevice tb;
+
+void setup() {
+    tb.begin("device-001");
+    tb.initWiFi("ssid","pass");
+    tb.registerDriver(&LED_DRIVER);
+    tb.connectToServer("iot.example.com", 8000);
+}
+
+void loop() {
+    tb.loop();
+}
+```
+
+See `include/ThingBootSDK.h` for the full public API.
