@@ -1,0 +1,14 @@
+{
+    "name": "thingboot-device-sdk",
+    "version": "1.0.1",
+    "description": "ThingBoot Device SDK - Precompiled IoT firmware development kit",
+    "keywords": ["iot", "sdk", "thingboot"],
+    "frameworks": ["arduino"],
+    "platforms": ["espressif8266", "espressif32"],
+    "build": {
+        "flags": ["-I include"],
+        "libArchive": false,
+        "srcFilter": ["-<*>"],
+        "extraScript": "extra_script.py"
+    }
+}
