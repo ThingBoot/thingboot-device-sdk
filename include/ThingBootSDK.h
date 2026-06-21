@@ -1,10 +1,20 @@
 #ifndef THINGBOOT_SDK_H
 #define THINGBOOT_SDK_H
 
-#include <Arduino.h>
+#include "common/system.h"
+#include "driver/led.h"
+#include "driver/btn.h"
+#include "common/core.h"
 
 // 版本号由 pack_lib.py 自动同步 VERSION 文件
 #define THINGBOOT_SDK_VERSION "1.0.1"
+
+#if defined(ESP8266) || defined(ESP32)
+#include <functional>
+#define TB_CALLBACK_CONFIG std::function<void(char*, uint8_t*, unsigned int)> callback
+#else
+#define TB_CALLBACK_CONFIG void (*callback)(char*, uint8_t*, unsigned int)
+#endif
 
 namespace thingboot {
 
@@ -22,6 +32,8 @@ struct TBDriver {
 };
 
 class ThingBootDevice {
+private:
+    TB_CALLBACK_CONFIG;
 public:
     ThingBootDevice();
     ~ThingBootDevice();
