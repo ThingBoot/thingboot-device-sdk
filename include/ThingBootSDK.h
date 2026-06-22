@@ -12,9 +12,9 @@
 #define TB_CALLBACK_EVENT std::function<void(SYS_STATE, bool)> tb_event_callback
 #define TB_CALLBACK_CONFIG std::function<void(const char*, String)> tb_config_callback
 
-#define TB_CALLBACK_TIMER10MS std::function<void()> tb_config_callback
-#define TB_CALLBACK_TIMER100MS std::function<void()> tb_config_callback
-#define TB_CALLBACK_TIMER1000MS std::function<void()> tb_config_callback
+#define TB_CALLBACK_TIMER10MS std::function<void()> tb_timer_10ms_callback
+#define TB_CALLBACK_TIMER100MS std::function<void()> tb_timer_100ms_callback
+#define TB_CALLBACK_TIMER1000MS std::function<void()> tb_timer_1000ms_callback
 
 class ThingBootDevice {
 private:
