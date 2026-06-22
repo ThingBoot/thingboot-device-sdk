@@ -12,26 +12,35 @@
 #define TB_CALLBACK_EVENT std::function<void(SYS_STATE, bool)> tb_event_callback
 #define TB_CALLBACK_CONFIG std::function<void(const char*, String)> tb_config_callback
 
-#define TB_CALLBACK_TIMER10MS std::function<void()> tb_timer_10ms_callback
-#define TB_CALLBACK_TIMER100MS std::function<void()> tb_timer_100ms_callback
-#define TB_CALLBACK_TIMER1000MS std::function<void()> tb_timer_1000ms_callback
+#define TB_CALLBACK_TIMER std::function<void()> tb_timer_10ms_callback
+#define TB_CALLBACK_TIMER std::function<void()> tb_timer_100ms_callback
+#define TB_CALLBACK_TIMER std::function<void()> tb_timer_1000ms_callback
 
 class ThingBootDevice {
 private:
     TB_CALLBACK_EVENT;
     TB_CALLBACK_CONFIG;
+
+    TB_CALLBACK_TIMER;
+    TB_CALLBACK_TIMER;
+    TB_CALLBACK_TIMER;
 public:
     ThingBootDevice();
     ~ThingBootDevice();
 
+    String getVersion();
+
+    // 事件和配置回调
     ThingBootDevice& setEventCallback(TB_CALLBACK_EVENT);
     ThingBootDevice& setConfigCallback(TB_CALLBACK_CONFIG);
 
-    String getVersion();
+    // 定时器回调注册
+    ThingBootDevice& setHandle10msCallback(TB_CALLBACK_TIMER);
+    ThingBootDevice& setHandle100msCallback(TB_CALLBACK_TIMER);
+    ThingBootDevice& setHandle1000msCallback(TB_CALLBACK_TIMER);
 
     void setup();
     void loop();
-    void restart();
 };
 
 #endif // THINGBOOT_SDK_H
