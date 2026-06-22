@@ -31,10 +31,8 @@ public:
     String getVersion();
 
     void setup();
-    void restart();
-
-    // Main loop - call from application loop()
     void loop();
+    void restart();
 };
 
 #endif // THINGBOOT_SDK_H
