@@ -1,6 +1,10 @@
 #ifndef THINGBOOT_SDK_H
 #define THINGBOOT_SDK_H
 
+#include "common/system.h"
+#include "driver/led.h"
+#include "driver/btn.h"
+
 // 版本号由 pack_lib.py 自动同步 VERSION 文件
 #define THINGBOOT_SDK_VERSION "1.0.1"
 
