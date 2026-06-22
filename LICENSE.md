@@ -52,6 +52,16 @@ THE SDK IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. IN NO EVENT SHALL THIN
 
 This Agreement shall be governed by the laws of the People's Republic of China.
 
+## 9. Third-Party Software Notice
+
+This SDK is built upon the following open-source projects, whose licenses are independent of this commercial agreement:
+
+- Arduino Framework (ESP32 Core): Apache-2.0 License
+- Arduino Framework (ESP8266 Core): LGPL-2.1 License
+
+Users are responsible for ensuring that their final firmware complies with the applicable open-source license requirements.
+
+ThingBoot assumes no liability for the license compliance of third-party open-source components.
 ---
 
 For licensing inquiries, contact: license@thingboot.com
